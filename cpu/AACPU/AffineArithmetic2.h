@@ -8,12 +8,12 @@
 
 using namespace std;
 
-// 不使用智能指针
+// 锟斤拷使锟斤拷锟斤拷锟斤拷指锟斤拷
 // debug 237ms
 class AANum
 {
 public:
-	// sers中的值代表一个唯一的代表元， 保证升序排列
+	// sers锟叫碉拷值锟斤拷锟斤拷一锟斤拷唯一锟侥达拷锟斤拷元锟斤拷 锟斤拷证锟斤拷锟斤拷锟斤拷锟斤拷
 	vector<int> *sers;
 	vector<double> *vals;
 
@@ -146,7 +146,7 @@ public:
 			else
 			{
 				ans.sers->emplace_back(ser_aa);
-				ans.vals->emplace_back((*bb.vals)[index_aa]);
+				ans.vals->emplace_back((*aa.vals)[index_aa]);
 				index_aa++;
 			}
 		}
@@ -192,7 +192,7 @@ public:
 			else
 			{
 				ans.sers->emplace_back(ser_aa);
-				ans.vals->emplace_back((*bb.vals)[index_aa]);
+				ans.vals->emplace_back((*aa.vals)[index_aa]);
 				index_aa++;
 			}
 		}
@@ -247,13 +247,13 @@ public:
 		double val_count = 0;
 		for (int i = 0; i < size(); ++i)
 		{
-			val_count += (*vals)[i];
+			val_count += abs((*vals)[i]);
 		}
 		*low = center_value - val_count;
 		*high = center_value + val_count;
 	}
 	
-	// 浅拷贝
+	// 浅锟斤拷锟斤拷
 	AANum& operator = (const AANum& bb)
 	{
 		center_value = bb.center_value;

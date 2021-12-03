@@ -41,24 +41,31 @@ public:
 		vals.emplace_back((high - low) / 2.0);
 	}
 
-	void ToIA(double* low, double* high)
+	inline void clear()
+	{
+		center_value = 0.0;
+		sers.clear();
+		vals.clear();
+	}
+
+	void ToIA(double* low, double* high) const
 	{
 		double val_count = 0;
 		for (int i = 0; i < size(); ++i)
 		{
-			val_count += vals[i];
+			val_count += abs(vals[i]);
 		}
 		*low = center_value - val_count;
 		*high = center_value + val_count;
 	}
 
-	// 深拷贝
-	AANum& operator = (const AANum& bb)
+	void FromIA(const double low, const double high)
 	{
-		center_value = bb.center_value;
-		sers = vector<int>(bb.sers);
-		vals = vector<double>(bb.vals);
-		return *this;
+		sers.clear();
+		vals.clear();
+		center_value = (low + high) / 2.0;
+		sers.emplace_back(static_ser++);
+		vals.emplace_back((high - low) / 2.0);
 	}
 
 	inline AANum operator + (const double p) const
@@ -103,9 +110,18 @@ public:
 		ans.center_value = -ans.center_value;
 		for (int i = 0; i < size(); ++i)
 		{
-			vals[i] = -vals[i];
+			ans.vals[i] = -ans.vals[i];
 		}
 		return ans;
+	}
+
+	inline void reverse()
+	{
+		center_value = -center_value;
+		for (int i = 0; i < size(); ++i)
+		{
+			vals[i] = -vals[i];
+		}
 	}
 
 	inline AANum operator * (const double p) const
@@ -136,6 +152,14 @@ public:
 		return ans;
 	}
 
+	AANum& operator += (const AANum &bb)
+	{
+		AANum ans;
+		add(*this, bb, ans);
+		*this = ans;
+		return *this;
+	}
+
 private:
 
 	void add(const AANum& aa, const AANum& bb, AANum& ans) const
@@ -164,7 +188,7 @@ private:
 			else
 			{
 				ans.sers.emplace_back(ser_aa);
-				ans.vals.emplace_back(bb.vals[index_aa]);
+				ans.vals.emplace_back(aa.vals[index_aa]);
 				index_aa++;
 			}
 		}
@@ -208,7 +232,7 @@ private:
 			else
 			{
 				ans.sers.emplace_back(ser_aa);
-				ans.vals.emplace_back(bb.vals[index_aa]);
+				ans.vals.emplace_back(aa.vals[index_aa]);
 				index_aa++;
 			}
 		}
@@ -256,5 +280,3 @@ private:
 	}
 
 };
-
-int AANum::static_ser = 0;

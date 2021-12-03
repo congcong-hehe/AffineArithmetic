@@ -8,12 +8,12 @@
 
 using namespace std;
 
-// ¿½±´º¯ÊýÊ¹ÓÃÉî¿½±´£¬=ÖØÔØÊ¹ÓÃÇ³¿½±´£¬ÎªÁËÔÚans = a + bµÄËãÊõÖÐ¼õÉÙÒ»¸öÉî¿½±´£¬ ËùÒÔ²»ÒªÊ¹ÓÃ¿½±´¹¹Ôìº¯ÊýÀ´¶ÔÒ»¸ö¶ÔÏó³õÊ¼»¯
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½î¿½ï¿½ï¿½ï¿½ï¿½=ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½Ç³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ans = a + bï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½î¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ô²ï¿½ÒªÊ¹ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ìº¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
 // debug 306ms
 class AANum
 {
 public:
-	// sersÖÐµÄÖµ´ú±íÒ»¸öÎ¨Ò»µÄ´ú±íÔª£¬ ±£Ö¤ÉýÐòÅÅÁÐ
+	// sersï¿½Ðµï¿½Öµï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Î¨Ò»ï¿½Ä´ï¿½ï¿½ï¿½Ôªï¿½ï¿½ ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	shared_ptr<vector<int>> sers;
 	shared_ptr<vector<double>> vals;
 
@@ -145,7 +145,7 @@ public:
 			else
 			{
 				ans.sers->emplace_back(ser_aa);
-				ans.vals->emplace_back((*bb.vals)[index_aa]);
+				ans.vals->emplace_back((*aa.vals)[index_aa]);
 				index_aa++;
 			}
 		}
@@ -191,7 +191,7 @@ public:
 			else
 			{
 				ans.sers->emplace_back(ser_aa);
-				ans.vals->emplace_back((*bb.vals)[index_aa]);
+				ans.vals->emplace_back((*aa.vals)[index_aa]);
 				index_aa++;
 			}
 		}
@@ -246,13 +246,13 @@ public:
 		double val_count = 0;
 		for (int i = 0; i < size(); ++i)
 		{
-			val_count += (*vals)[i];
+			val_count += abs((*vals)[i]);
 		}
 		*low = center_value - val_count;
 		*high = center_value + val_count;
 	}
 	
-	// Ç³¿½±´
+	// Ç³ï¿½ï¿½ï¿½ï¿½
 	AANum& operator = (const AANum& bb)
 	{
 		center_value = bb.center_value;

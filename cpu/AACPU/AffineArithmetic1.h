@@ -12,7 +12,7 @@ using namespace std;
 class AANum
 {
 public:
-	// sersÖÐµÄÖµ´ú±íÒ»¸öÎ¨Ò»µÄ´ú±íÔª£¬ ±£Ö¤ÉýÐòÅÅÁÐ
+	// sersï¿½Ðµï¿½Öµï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Î¨Ò»ï¿½Ä´ï¿½ï¿½ï¿½Ôªï¿½ï¿½ ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	vector<int> sers;
 	vector<double> vals;
 
@@ -135,7 +135,7 @@ public:
 			else
 			{
 				ans.sers.emplace_back(ser_aa);
-				ans.vals.emplace_back(bb.vals[index_aa]);
+				ans.vals.emplace_back(aa.vals[index_aa]);
 				index_aa++;
 			}
 		}
@@ -181,7 +181,7 @@ public:
 			else
 			{
 				ans.sers.emplace_back(ser_aa);
-				ans.vals.emplace_back(bb.vals[index_aa]);
+				ans.vals.emplace_back(aa.vals[index_aa]);
 				index_aa++;
 			}
 		}
@@ -232,7 +232,7 @@ public:
 	}
 
 
-	// Éî¿½±´
+	// ï¿½î¿½ï¿½ï¿½
 	AANum& operator = (const AANum& bb)
 	{
 		center_value = bb.center_value;
