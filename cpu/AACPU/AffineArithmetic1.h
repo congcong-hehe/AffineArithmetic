@@ -4,9 +4,11 @@
 #include <algorithm>
 #include <stdio.h>
 #include <iterator>
+#include <memory>
 
 using namespace std;
 
+// debug 224ms
 class AANum
 {
 public:
@@ -15,6 +17,28 @@ public:
 	vector<double> vals;
 
 	double center_value = 0;
+
+	static int static_ser;
+
+public:
+
+	AANum()
+	{
+
+	}
+
+	AANum(const double low, const double high)
+	{
+		center_value = (low + high) / 2.0;
+		sers.emplace_back(static_ser++);
+		vals.emplace_back((high - low) / 2.0);
+	}
+
+
+	~AANum()
+	{
+
+	}
 
 	inline int size() const { return sers.size(); }
 
@@ -26,52 +50,69 @@ public:
 			printf("%d : %f\n", sers[i], vals[i]);
 		}
 	}
-};
 
-class Affine 
-{
 public:
-	int aa_ser;
 
-	Affine() : aa_ser(0) {}
-	~Affine() {}
-
-	inline void add(const AANum& aa, const double p, AANum& ans)
+	inline AANum operator + (const double p) const
 	{
-		ans = aa;
+		AANum ans(*this);
 		ans.center_value += p;
+		return ans;
 	}
 
-	inline void sub(const AANum& aa, const double p, AANum& ans)
+	inline AANum operator - (const double p) const
 	{
-		ans = aa;
+		AANum ans(*this);
 		ans.center_value -= p;
+		return ans;
 	}
 
-	inline void mul(const AANum& aa, const double p, AANum& ans)
+	inline AANum& operator += (const double p)
 	{
-		ans = aa;
-		ans.center_value *= p;
-		for (int i = 0; i < ans.size(); ++i)
+		center_value += p;
+		return *this;
+	}
+
+	inline AANum& operator -= (const double p)
+	{
+		center_value -= p;
+		return *this;
+	}
+
+	inline AANum& operator *= (const double p)
+	{
+		center_value *= p;
+		for (int i = 0; i < size(); ++i)
 		{
-			ans.vals[i] *= p;
+			vals[i] *= p;
 		}
+		return *this;
 	}
 
-	void neg(const AANum& aa, AANum& ans)
+	inline AANum operator - ()
 	{
-		ans = aa;
-		ans.center_value = - ans.center_value;
-		for (int i = 0; i < ans.size(); ++i)
+		AANum ans(*this);
+		ans.center_value = -ans.center_value;
+		for (int i = 0; i < size(); ++i)
 		{
-			ans.vals[i] = -ans.vals[i];
+			vals[i] = -vals[i];
 		}
+		return ans;
 	}
 
-	void add(const AANum& aa, const AANum& bb, AANum& ans)
+	inline AANum operator * (const double p) const
 	{
+		AANum ans(*this);
+		ans *= p;
+		return ans;
+	}
+
+	AANum operator + (const AANum& bb) const
+	{
+		AANum ans;
+		const AANum& aa = *this;
 		ans.center_value = aa.center_value + bb.center_value;
-		
+
 		int index_aa = 0;
 		int index_bb = 0;
 		while (index_aa != aa.size() && index_bb != bb.size())
@@ -109,11 +150,13 @@ public:
 			copy(bb.sers.begin() + index_bb, bb.sers.end(), back_inserter(ans.sers));
 			copy(bb.vals.begin() + index_bb, bb.vals.end(), back_inserter(ans.vals));
 		}
-
+		return ans;
 	}
 
-	void sub(const AANum& aa, const AANum& bb, AANum& ans)
+	AANum operator - (const AANum& bb) const
 	{
+		AANum ans;
+		const AANum& aa = *this;
 		ans.center_value = aa.center_value - bb.center_value;
 
 		int index_aa = 0;
@@ -132,7 +175,7 @@ public:
 			else if (ser_aa > ser_bb)
 			{
 				ans.sers.emplace_back(ser_bb);
-				ans.vals.emplace_back(- bb.vals[index_bb]);
+				ans.vals.emplace_back(bb.vals[index_bb]);
 				index_bb++;
 			}
 			else
@@ -156,78 +199,47 @@ public:
 				ans.vals.emplace_back(-bb.vals[i]);
 			}
 		}
-
+		return ans;
 	}
 
-	void mul(const AANum& aa, const AANum& bb, AANum& ans)
+	AANum operator * (const AANum& bb) const
 	{
-		AANum tempa = aa;
+		const AANum& aa = *this;
+		AANum tempa = *this;
 		tempa.center_value = 0;
-		mulSelf(tempa, bb.center_value);
+		tempa *= bb.center_value;
 		AANum tempb = bb;
 		tempb.center_value = 0;
-		mulSelf(tempb, aa.center_value);
+		tempb *= aa.center_value;
 
-		add(tempa, tempb, ans);
+		AANum ans = tempa + tempb;
 		ans.center_value = aa.center_value * bb.center_value;
 
 		double u = 0, v = 0;
 		for (int i = 0; i < aa.size(); ++i)
 		{
-			u += abs(aa.vals[i]);
+			u += abs((aa.vals)[i]);
 		}
 		for (int i = 0; i < bb.size(); ++i)
 		{
-			v += abs(bb.vals[i]);
+			v += abs((bb.vals)[i]);
 		}
 
-		ans.sers.emplace_back(aa_ser++);
+		ans.sers.emplace_back(static_ser++);
 		ans.vals.emplace_back(u * v);
+
+		return ans;
 	}
 
-	inline void addSelf(AANum& aa, const double p) 
-	{
-		aa.center_value += p;
-	}
 
-	void subSelf(AANum& aa, const double p)
+	// Éî¿½±´
+	AANum& operator = (const AANum& bb)
 	{
-		aa.center_value -= p;
-	}
-
-	void mulSelf(AANum& aa, const double p)
-	{
-		aa.center_value *= p;
-		for (int i = 0; i < aa.size(); ++i)
-		{
-			aa.vals[i] *= p;
-		}
-	}
-
-	void negSelf(AANum& aa)
-	{
-		aa.center_value = -aa.center_value;
-		for (int i = 0; i < aa.size(); ++i)
-		{
-			aa.vals[i] = -aa.vals[i];
-		}
-	}
-
-	void IAToAA(const double low, const double high, AANum& ans)
-	{
-		ans.center_value = (low + high) / 2.0;
-		ans.sers.emplace_back(aa_ser++);
-		ans.vals.emplace_back((high - low) / 2.0);
-	}
-
-	void AAToIA(const AANum& aa, double& low, double& high)
-	{
-		double val_count = 0;
-		for (int i = 0; i < aa.size(); ++i)
-		{
-			val_count += aa.vals[i];
-		}
-		low = aa.center_value - val_count;
-		high = aa.center_value + val_count;
+		center_value = bb.center_value;
+		sers = vector<int>(bb.sers);
+		vals = vector<double>(bb.vals);
+		return *this;
 	}
 };
+
+int AANum::static_ser = 0;

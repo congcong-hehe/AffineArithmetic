@@ -15,10 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AffineArithmetic_vec.h">
+    <ClInclude Include="AffineArithmetic0.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="AffineArithmecit_list.h">
+    <ClInclude Include="AffineArithmetic1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AffineArithmetic2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AffineArithmetic3.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
