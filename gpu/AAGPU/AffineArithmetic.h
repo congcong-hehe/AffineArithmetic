@@ -209,6 +209,7 @@ private:
 		if (nullptr != cur_bb) cur->next = copyList(cur_bb);
 		ans.head = head->next;
 		delete head;
+		while (nullptr != cur->next) cur = cur->next;
 		return cur;
 	}
 
@@ -261,6 +262,7 @@ private:
 		}
 		ans.head = head->next;
 		delete head;
+		while (nullptr != cur->next) cur = cur->next;
 		return cur;
 	}
 

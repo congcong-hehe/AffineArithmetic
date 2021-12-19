@@ -20,13 +20,15 @@ int main()
 	//a1.print();
 	//a2.print();
 	//a5 = a1 * a2;
-	begin = clock();
+	/*begin = clock();
 	for (int i = 0; i < 10000; ++i)
 	{
 		a5 = a1 * a2;
 	}
 	end = clock();
 	printf("%lldms\n", end - begin);
+	a5.print();*/
+	a5 = a1 * a2;
 	a5.print();
 
 	return 0;

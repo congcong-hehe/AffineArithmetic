@@ -280,3 +280,5 @@ private:
 	}
 
 };
+
+int AANum::static_ser = 0;
