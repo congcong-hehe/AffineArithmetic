@@ -1,26 +1,35 @@
-#pragma once
+﻿#pragma once
 
 #include <vector>
 #include <algorithm>
 #include <stdio.h>
 #include <iterator>
-#include <memory>
 
 using namespace std;
 
-// debug 224ms
+// 对放射算数之间的运算又加了一层拷贝，提高了运算效率
+// 数组实现
+// 单线程
+// 196ms
 class AANum
 {
 public:
-	// sers�е�ֵ����һ��Ψһ�Ĵ���Ԫ�� ��֤��������
 	vector<int> sers;
 	vector<double> vals;
 
 	double center_value = 0;
-
 	static int static_ser;
 
-public:
+	inline int size() const { return sers.size(); }
+
+	void print()
+	{
+		printf("center : %f\n", center_value);
+		for (int i = 0; i < size(); ++i)
+		{
+			printf("%d : %f\n", sers[i], vals[i]);
+		}
+	}
 
 	AANum()
 	{
@@ -34,24 +43,32 @@ public:
 		vals.emplace_back((high - low) / 2.0);
 	}
 
-
-	~AANum()
+	inline void clear()
 	{
-
+		center_value = 0.0;
+		sers.clear();
+		vals.clear();
 	}
 
-	inline int size() const { return sers.size(); }
-
-	void print()
+	void ToIA(double* low, double* high) const
 	{
-		printf("center : %f\n", center_value);
+		double val_count = 0;
 		for (int i = 0; i < size(); ++i)
 		{
-			printf("%d : %f\n", sers[i], vals[i]);
+			val_count += abs(vals[i]);
 		}
+		*low = center_value - val_count;
+		*high = center_value + val_count;
 	}
 
-public:
+	void FromIA(const double low, const double high)
+	{
+		sers.clear();
+		vals.clear();
+		center_value = (low + high) / 2.0;
+		sers.emplace_back(static_ser++);
+		vals.emplace_back((high - low) / 2.0);
+	}
 
 	inline AANum operator + (const double p) const
 	{
@@ -95,9 +112,18 @@ public:
 		ans.center_value = -ans.center_value;
 		for (int i = 0; i < size(); ++i)
 		{
-			vals[i] = -vals[i];
+			ans.vals[i] = -ans.vals[i];
 		}
 		return ans;
+	}
+
+	inline void reverse()
+	{
+		center_value = -center_value;
+		for (int i = 0; i < size(); ++i)
+		{
+			vals[i] = -vals[i];
+		}
 	}
 
 	inline AANum operator * (const double p) const
@@ -110,7 +136,36 @@ public:
 	AANum operator + (const AANum& bb) const
 	{
 		AANum ans;
-		const AANum& aa = *this;
+		add(*this, bb, ans);
+		return ans;
+	}
+
+	AANum operator - (const AANum& bb) const
+	{
+		AANum ans;
+		sub(*this, bb, ans);
+		return ans;
+	}
+
+	AANum operator * (const AANum& bb) const
+	{
+		AANum ans;
+		mul(*this, bb, ans);
+		return ans;
+	}
+
+	AANum& operator += (const AANum &bb)
+	{
+		AANum ans;
+		add(*this, bb, ans);
+		*this = ans;
+		return *this;
+	}
+
+private:
+
+	void add(const AANum& aa, const AANum& bb, AANum& ans) const
+	{
 		ans.center_value = aa.center_value + bb.center_value;
 
 		int index_aa = 0;
@@ -150,13 +205,11 @@ public:
 			copy(bb.sers.begin() + index_bb, bb.sers.end(), back_inserter(ans.sers));
 			copy(bb.vals.begin() + index_bb, bb.vals.end(), back_inserter(ans.vals));
 		}
-		return ans;
+
 	}
 
-	AANum operator - (const AANum& bb) const
+	void sub(const AANum& aa, const AANum& bb, AANum& ans) const
 	{
-		AANum ans;
-		const AANum& aa = *this;
 		ans.center_value = aa.center_value - bb.center_value;
 
 		int index_aa = 0;
@@ -175,7 +228,7 @@ public:
 			else if (ser_aa > ser_bb)
 			{
 				ans.sers.emplace_back(ser_bb);
-				ans.vals.emplace_back(bb.vals[index_bb]);
+				ans.vals.emplace_back(-bb.vals[index_bb]);
 				index_bb++;
 			}
 			else
@@ -199,47 +252,35 @@ public:
 				ans.vals.emplace_back(-bb.vals[i]);
 			}
 		}
-		return ans;
+
 	}
 
-	AANum operator * (const AANum& bb) const
+	void mul(const AANum& aa, const AANum& bb, AANum& ans) const
 	{
-		const AANum& aa = *this;
-		AANum tempa = *this;
+		AANum tempa = aa;
 		tempa.center_value = 0;
 		tempa *= bb.center_value;
 		AANum tempb = bb;
 		tempb.center_value = 0;
 		tempb *= aa.center_value;
 
-		AANum ans = tempa + tempb;
+		add(tempa, tempb, ans);
 		ans.center_value = aa.center_value * bb.center_value;
 
 		double u = 0, v = 0;
 		for (int i = 0; i < aa.size(); ++i)
 		{
-			u += abs((aa.vals)[i]);
+			u += abs(aa.vals[i]);
 		}
 		for (int i = 0; i < bb.size(); ++i)
 		{
-			v += abs((bb.vals)[i]);
+			v += abs(bb.vals[i]);
 		}
 
 		ans.sers.emplace_back(static_ser++);
 		ans.vals.emplace_back(u * v);
-
-		return ans;
 	}
 
-
-	// ���
-	AANum& operator = (const AANum& bb)
-	{
-		center_value = bb.center_value;
-		sers = vector<int>(bb.sers);
-		vals = vector<double>(bb.vals);
-		return *this;
-	}
 };
 
 int AANum::static_ser = 0;

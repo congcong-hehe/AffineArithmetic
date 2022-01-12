@@ -139,10 +139,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AffineArithmetic0.h" />
-    <ClInclude Include="AffineArithmetic1.h" />
-    <ClInclude Include="AffineArithmetic2.h" />
-    <ClInclude Include="AffineArithmetic3.h" />
+    <ClInclude Include="AffineArithmetic_arr.h" />
+    <ClInclude Include="AffineArithmetic_list.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
