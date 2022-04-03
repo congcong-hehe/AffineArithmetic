@@ -139,11 +139,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AffineArithmetic_arr.h" />
-    <ClInclude Include="AffineArithmetic_list.h" />
+    <ClCompile Include="AAList.cpp" />
+    <ClCompile Include="AAVec.cpp" />
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp" />
+    <ClInclude Include="AAList.h" />
+    <ClInclude Include="AAVec.h" />
+    <ClInclude Include="Interval.h" />
+    <ClInclude Include="RAA.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

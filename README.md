@@ -1,5 +1,9 @@
 C++ implementation for Affine Arithmetic.
 
-I want to implement it on CPU and GPU with high efficiency.
+* AAList : use list to save 
+* AAVec : use vec to save
+* RAA: revised Affine arithmetic
 
-CPU/AffineArithmetic3 is the most complicated and efficient.
+Reference
+* [1] Luiz J , Comba D , Stolfi J . Affine Arithmetic and its Applications to Computer Graphics. 1993.
+*  [2] Messine F . Extensions of Affine Arithmetic: Application to Unconstrained Global Optimization[J]. Journal of Universal Computer Science, 2008, 8(11):992-1015.

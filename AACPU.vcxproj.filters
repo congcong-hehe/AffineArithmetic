@@ -15,16 +15,28 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AffineArithmetic_arr.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="AffineArithmetic_list.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="AAList.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AAVec.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AAList.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AAVec.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Interval.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="RAA.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
